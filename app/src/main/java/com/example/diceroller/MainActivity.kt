@@ -3,6 +3,7 @@ package com.example.diceroller
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 
@@ -12,26 +13,35 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val rollDice: Button = findViewById(R.id.button2)
-        val textResult : TextView = findViewById(R.id.textView2)
-        rollDice.setOnClickListener {
-            Toast.makeText(this,"Dice Rolled!",Toast.LENGTH_SHORT).show()
+        val rollButton: Button = findViewById(R.id.button2)
 
-            when(Dice(6).roll()){
-                1 -> textResult.text = "1"
-                2 -> textResult.text = "2"
-                3 -> textResult.text = "3"
-                4 -> textResult.text = "4"
-                5 -> textResult.text = "5"
-                6 -> textResult.text = "4"
-            }
+        rollButton.setOnClickListener { rollDice() }
 
-        }
+        rollDice()
     }
-}
 
-class Dice(private val numSides : Int){
-    fun roll() : Int{
-        return (1..numSides).random()
+
+    private fun rollDice() {
+
+        val diceImage: ImageView = findViewById(R.id.imageView)
+        val diceRoll = Dice(6).roll()
+
+        val drawableResult = when (diceRoll) {
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
+        }
+
+        diceImage.setImageResource(drawableResult)
+        diceImage.contentDescription = diceRoll.toString()
+    }
+
+    class Dice(private val numSides: Int) {
+        fun roll(): Int {
+            return (1..numSides).random()
+        }
     }
 }
